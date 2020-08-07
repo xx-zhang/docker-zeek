@@ -1,5 +1,6 @@
 FROM malcolmnetsec/zeek:2.1.1
 
+RUN apt-get install -q -y wget
 # TODO Start Using `zeekcfg` Manage Our Zeek Loading
 ARG ZEEKCFG_VERSION=0.0.5
 
