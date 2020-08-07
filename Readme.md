@@ -134,3 +134,17 @@ Developer documenation can be found in the [docs](docs/) folder.
 ## Credits
 
 Dockerfile based on [blacktop/docker-zeek](https://github.com/blacktop/docker-zeek/tree/master/zeekctl).
+
+
+## UPGRADE 
+> 本人更新的地方 
+>
+
+- [http_enrichment](https://github.com/Canon88/zeek-plugin-http-request-enrichment)
+- [http_all_header](https://github.com/sethhall/zeek-log-all-http-headers)
+
+
+
+## 2020-8-7 
+- build -  - - 
+- [custom-http-study](https://docs.zeek.org/en/master/frameworks/broker.html#broker-backed-zeek-tables-for-data-synchronization-and-persistence)

@@ -9,9 +9,9 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV BISON_VERSION "3.6.2"
 ENV CCACHE_DIR "/var/spool/ccache"
 ENV CCACHE_COMPRESS 1
-ENV CMAKE_DIR "/opt/cmake"
+ENV CMAKE_DIR "/usr/local/cmake"
 ENV CMAKE_VERSION "3.17.2"
-ENV SPICY_DIR "/opt/spicy"
+ENV SPICY_DIR "/usr/local/spicy"
 ENV SRC_BASE_DIR "/usr/local/src"
 ENV ZEEK_DIR "/user/local/zeek"
 ENV ZEEK_PATCH_DIR "${SRC_BASE_DIR}/zeek-patches"
@@ -87,6 +87,7 @@ RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list 
     bash -c "find ${ZEEK_DIR}/lib -type d -name CMakeFiles -exec rm -rf '{}' \; 2>/dev/null || true" && \
     bash -c "file ${ZEEK_DIR}/{lib,bin}/* ${ZEEK_DIR}/lib/zeek/plugins/packages/*/lib/* ${ZEEK_DIR}/lib/zeek/plugins/*/lib/* ${SPICY_DIR}/{lib,bin}/* ${SPICY_DIR}/lib/spicy/Zeek_Spicy/lib/* | grep 'ELF 64-bit' | sed 's/:.*//' | xargs -l -r strip -v --strip-unneeded"
 
+# build from env
 FROM debian:buster-slim
 
 LABEL maintainer="malcolm.netsec@gmail.com"
@@ -98,20 +99,12 @@ LABEL org.opencontainers.image.vendor='Idaho National Laboratory'
 LABEL org.opencontainers.image.title='malcolmnetsec/zeek'
 LABEL org.opencontainers.image.description='Malcolm container providing Zeek'
 
-ARG DEFAULT_UID=1000
-ARG DEFAULT_GID=1000
-ENV DEFAULT_UID $DEFAULT_UID
-ENV DEFAULT_GID $DEFAULT_GID
-ENV PUSER "zeek"
-ENV PGROUP "zeek"
-ENV PUSER_PRIV_DROP true
-
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
 ENV LLVM_VERSION "10"
-ENV ZEEK_DIR "/opt/zeek"
-ENV SPICY_DIR "/opt/spicy"
+ENV ZEEK_DIR "/usr/local/zeek"
+ENV SPICY_DIR "/usr/local/spicy"
 
 COPY --from=build ${ZEEK_DIR} ${ZEEK_DIR}
 COPY --from=build ${SPICY_DIR} ${SPICY_DIR}
