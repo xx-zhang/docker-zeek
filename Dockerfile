@@ -90,14 +90,7 @@ RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list 
 # build from env
 FROM debian:buster-slim
 
-LABEL maintainer="malcolm.netsec@gmail.com"
-LABEL org.opencontainers.image.authors='malcolm.netsec@gmail.com'
-LABEL org.opencontainers.image.url='https://github.com/idaholab/Malcolm'
-LABEL org.opencontainers.image.documentation='https://github.com/idaholab/Malcolm/blob/master/README.md'
-LABEL org.opencontainers.image.source='https://github.com/idaholab/Malcolm'
-LABEL org.opencontainers.image.vendor='Idaho National Laboratory'
-LABEL org.opencontainers.image.title='malcolmnetsec/zeek'
-LABEL org.opencontainers.image.description='Malcolm container providing Zeek'
+LABEL maintainer="actanble@gmail.com"
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
@@ -159,30 +152,21 @@ RUN mkdir -p /tmp/logs && \
       cd /tmp && \
       rm -rf /tmp/logs /tmp/pcaps
 
-
-# to be populated at build-time:
-ARG BUILD_DATE
-ARG MALCOLM_VERSION
-ARG VCS_REVISION
-
-LABEL org.opencontainers.image.created=$BUILD_DATE
-LABEL org.opencontainers.image.version=$MALCOLM_VERSION
-LABEL org.opencontainers.image.revision=$VCS_REVISION
-
+# TODO Start Using `zeekcfg` Manage Our Zeek Loading
 ARG ZEEKCFG_VERSION=0.0.5
 
-RUN wget -qO /usr/local/zeek/bin/zeekcfg https://github.com/activecm/zeekcfg/releases/download/v${ZEEKCFG_VERSION}/zeekcfg_${ZEEKCFG_VERSION}_linux_amd64 \
- && chmod +x /usr/local/zeek/bin/zeekcfg
+RUN wget -qO ${ZEEK_DIR}/bin/zeekcfg https://github.com/activecm/zeekcfg/releases/download/v${ZEEKCFG_VERSION}/zeekcfg_${ZEEKCFG_VERSION}_linux_amd64 \
+ && chmod +x ${ZEEK_DIR}/bin/zeekcfg
 # Run zeekctl cron to heal processes every 5 minutes
-RUN echo "*/5       *       *       *       *       /usr/local/zeek/bin/zeekctl cron" >> /etc/crontabs/root
+RUN echo "*/5       *       *       *       *      ${ZEEK_DIR}/bin/zeekctl cron" >> /etc/crontabs/root
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 # Users must supply their own node.cfg
-RUN rm -f /usr/local/zeek/etc/node.cfg
-COPY etc/networks.cfg /usr/local/zeek/etc/networks.cfg
-COPY etc/zeekctl.cfg /usr/local/zeek/etc/zeekctl.cfg
-#COPY share/zeek/site/local.zeek /usr/local/zeek/share/zeek/site/local.zeek
+RUN rm -f ${ZEEK_DIR}/etc/node.cfg
+COPY etc/networks.cfg ${ZEEK_DIR}/etc/networks.cfg
+COPY etc/zeekctl.cfg ${ZEEK_DIR}/etc/zeekctl.cfg
+#COPY share/zeek/site/local.zeek ${ZEEK_DIR}/share/zeek/site/local.zeek
 
 CMD ["/docker-entrypoint.sh"]
 
-VOLUME /usr/local/zeek/logs
+VOLUME ${ZEEK_DIR}/logs
