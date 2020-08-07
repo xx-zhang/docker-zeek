@@ -86,7 +86,7 @@ RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list 
     bash -c "find ${ZEEK_DIR}/lib -type d -name CMakeFiles -exec rm -rf '{}' \; 2>/dev/null || true" && \
     bash -c "file ${ZEEK_DIR}/{lib,bin}/* ${ZEEK_DIR}/lib/zeek/plugins/packages/*/lib/* ${ZEEK_DIR}/lib/zeek/plugins/*/lib/* ${SPICY_DIR}/{lib,bin}/* ${SPICY_DIR}/lib/spicy/Zeek_Spicy/lib/* | grep 'ELF 64-bit' | sed 's/:.*//' | xargs -l -r strip -v --strip-unneeded"
 
-# build from env  = MAIN 
+# build from env  = MAIN
 FROM debian:buster-slim
 LABEL maintainer="actanble@gmail.com"
 
@@ -137,6 +137,10 @@ RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list 
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD zeek/config/*.zeek ${ZEEK_DIR}/share/zeek/site/
+# TODO check the install of currect
+ADD shared/bin/pcap_moloch_and_zeek_processor.py /usr/local/bin/
+ADD shared/bin/pcap_utils.py /usr/local/bin/
+ADD shared/pcaps /tmp/pcaps
 
 # sanity check to make sure the plugins installed and copied over correctly
 # these ENVs should match the number of third party plugins installed by zeek_install_plugins.sh
