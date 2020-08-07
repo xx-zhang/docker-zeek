@@ -1,7 +1,6 @@
 FROM debian:buster-slim AS build
 
 # Copyright (c) 2020 Battelle Energy Alliance, LLC.  All rights reserved.
-
 ENV DEBIAN_FRONTEND noninteractive
 
 # build zeek and plugins (spicy, additional protocol parsers, etc.)
@@ -13,7 +12,7 @@ ENV CMAKE_DIR "/usr/local/cmake"
 ENV CMAKE_VERSION "3.17.2"
 ENV SPICY_DIR "/usr/local/spicy"
 ENV SRC_BASE_DIR "/usr/local/src"
-ENV ZEEK_DIR "/user/local/zeek"
+ENV ZEEK_DIR "/usr/local/zeek"
 ENV ZEEK_PATCH_DIR "${SRC_BASE_DIR}/zeek-patches"
 ENV ZEEK_SRC_DIR "${SRC_BASE_DIR}/zeek-${ZEEK_VERSION}"
 ENV ZEEK_VERSION "3.0.7"
@@ -87,7 +86,19 @@ RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list 
     bash -c "find ${ZEEK_DIR}/lib -type d -name CMakeFiles -exec rm -rf '{}' \; 2>/dev/null || true" && \
     bash -c "file ${ZEEK_DIR}/{lib,bin}/* ${ZEEK_DIR}/lib/zeek/plugins/packages/*/lib/* ${ZEEK_DIR}/lib/zeek/plugins/*/lib/* ${SPICY_DIR}/{lib,bin}/* ${SPICY_DIR}/lib/spicy/Zeek_Spicy/lib/* | grep 'ELF 64-bit' | sed 's/:.*//' | xargs -l -r strip -v --strip-unneeded"
 
-# TODO delete muti build  - - - --
+# build from env  = MAIN 
+FROM debian:buster-slim
+LABEL maintainer="actanble@gmail.com"
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV TERM xterm
+
+ENV LLVM_VERSION "10"
+ENV ZEEK_DIR "/usr/local/zeek"
+ENV SPICY_DIR "/usr/local/spicy"
+
+COPY --from=build ${ZEEK_DIR} ${ZEEK_DIR}
+COPY --from=build ${SPICY_DIR} ${SPICY_DIR}
 
 RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list && \
       echo "deb http://deb.debian.org/debian buster-backports main" >> /etc/apt/sources.list && \
