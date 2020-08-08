@@ -87,3 +87,23 @@ apt-get -q update && \
       apt-get -q -y autoremove && \
       apt-get clean && \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+git clone https://github.com/xx-zhang/docker-zeek \
+  && cp -r docker-zeek/zeek/config/*.zeek /usr/local/zeek/share/zeek/site/ && \
+  cp  docker-zeek/etc/networks.cfg ${ZEEK_DIR}/etc/networks.cfg && \
+cp docker-zeek/etc/zeekctl.cfg ${ZEEK_DIR}/etc/zeekctl.cfg && \
+cp docker-zeek/docker-entrypoint.sh /entrypoint.sh
+
+ZEEKCFG_VERSION=0.0.5 && \
+  wget -qO ${ZEEK_DIR}/bin/zeekcfg https://github.com/activecm/zeekcfg/releases/download/v${ZEEKCFG_VERSION}/zeekcfg_${ZEEKCFG_VERSION}_linux_amd64 \
+ && chmod +x ${ZEEK_DIR}/bin/zeekcfg && \
+  echo "*/5       *       *       *       *      ${ZEEK_DIR}/bin/zeekctl cron" >> /etc/crontab
+
+# Users must supply their own node.cfg
+RUN rm -f ${ZEEK_DIR}/etc/node.cfg
+
+#COPY share/zeek/site/local.zeek ${ZEEK_DIR}/share/zeek/site/local.zeek
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+VOLUME ${ZEEK_DIR}/logs

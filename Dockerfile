@@ -109,6 +109,7 @@ RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list 
       echo "deb http://apt.llvm.org/buster/ llvm-toolchain-buster-${LLVM_VERSION} main" >> /etc/apt/sources.list && \
     apt-get -q update && \
     apt-get install -q -y -t buster-backports --no-install-recommends \
+      wget \
       file \
       libatomic1 \
       libclang-cpp${LLVM_VERSION} \
@@ -144,7 +145,7 @@ ADD shared/bin/pcap_utils.py /usr/local/bin/
 ADD shared/pcaps /tmp/pcaps
 
 # TODO custom scripts to add
-ADD ./scripts ${ZEEK_DIR}/share/zeek/site/
+#ADD ./scripts ${ZEEK_DIR}/share/zeek/site/
 
 # sanity check to make sure the plugins installed and copied over correctly
 # these ENVs should match the number of third party plugins installed by zeek_install_plugins.sh
@@ -162,7 +163,7 @@ USER root
 # TODO Start Using `zeekcfg` Manage Our Zeek Loading
 ARG ZEEKCFG_VERSION=0.0.5
 
-RUN curl -o ${ZEEK_DIR}/bin/zeekcfg https://github.com/activecm/zeekcfg/releases/download/v${ZEEKCFG_VERSION}/zeekcfg_${ZEEKCFG_VERSION}_linux_amd64 \
+RUN wget -qO ${ZEEK_DIR}/bin/zeekcfg https://github.com/activecm/zeekcfg/releases/download/v${ZEEKCFG_VERSION}/zeekcfg_${ZEEKCFG_VERSION}_linux_amd64 \
  && chmod +x ${ZEEK_DIR}/bin/zeekcfg
 # Run zeekctl cron to heal processes every 5 minutes
 RUN echo "*/5       *       *       *       *      ${ZEEK_DIR}/bin/zeekctl cron" >> /etc/crontab
@@ -173,7 +174,7 @@ RUN rm -f ${ZEEK_DIR}/etc/node.cfg
 COPY etc/networks.cfg ${ZEEK_DIR}/etc/networks.cfg
 COPY etc/zeekctl.cfg ${ZEEK_DIR}/etc/zeekctl.cfg
 #COPY share/zeek/site/local.zeek ${ZEEK_DIR}/share/zeek/site/local.zeek
-
+RUN ln -s /usr/local/zeek/bin/zeek /usr/bin/zeek
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 VOLUME ${ZEEK_DIR}/logs
