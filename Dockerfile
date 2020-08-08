@@ -169,6 +169,6 @@ COPY etc/networks.cfg ${ZEEK_DIR}/etc/networks.cfg
 COPY etc/zeekctl.cfg ${ZEEK_DIR}/etc/zeekctl.cfg
 #COPY share/zeek/site/local.zeek ${ZEEK_DIR}/share/zeek/site/local.zeek
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["/docker-entrypoint.sh"]
 
 VOLUME ${ZEEK_DIR}/logs
