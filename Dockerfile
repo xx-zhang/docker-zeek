@@ -154,10 +154,11 @@ RUN mkdir -p /tmp/logs && \
       cd /tmp && \
       rm -rf /tmp/logs /tmp/pcaps
 
+USER root
 # TODO Start Using `zeekcfg` Manage Our Zeek Loading
 ARG ZEEKCFG_VERSION=0.0.5
 
-RUN wget -qO ${ZEEK_DIR}/bin/zeekcfg https://github.com/activecm/zeekcfg/releases/download/v${ZEEKCFG_VERSION}/zeekcfg_${ZEEKCFG_VERSION}_linux_amd64 \
+RUN curl -o ${ZEEK_DIR}/bin/zeekcfg https://github.com/activecm/zeekcfg/releases/download/v${ZEEKCFG_VERSION}/zeekcfg_${ZEEKCFG_VERSION}_linux_amd64 \
  && chmod +x ${ZEEK_DIR}/bin/zeekcfg
 # Run zeekctl cron to heal processes every 5 minutes
 RUN echo "*/5       *       *       *       *      ${ZEEK_DIR}/bin/zeekctl cron" >> /etc/crontab
@@ -169,6 +170,6 @@ COPY etc/networks.cfg ${ZEEK_DIR}/etc/networks.cfg
 COPY etc/zeekctl.cfg ${ZEEK_DIR}/etc/zeekctl.cfg
 #COPY share/zeek/site/local.zeek ${ZEEK_DIR}/share/zeek/site/local.zeek
 
-CMD ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 VOLUME ${ZEEK_DIR}/logs
