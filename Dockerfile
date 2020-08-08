@@ -10,7 +10,7 @@ ENV CCACHE_DIR "/var/spool/ccache"
 ENV CCACHE_COMPRESS 1
 ENV CMAKE_DIR "/usr/local/cmake"
 ENV CMAKE_VERSION "3.17.2"
-ENV SPICY_DIR "/usr/local/spicy"
+ENV SPICY_DIR "/opt/spicy"
 ENV SRC_BASE_DIR "/usr/local/src"
 ENV ZEEK_DIR "/usr/local/zeek"
 ENV ZEEK_PATCH_DIR "${SRC_BASE_DIR}/zeek-patches"
@@ -95,7 +95,8 @@ ENV TERM xterm
 
 ENV LLVM_VERSION "10"
 ENV ZEEK_DIR "/usr/local/zeek"
-ENV SPICY_DIR "/usr/local/spicy"
+# TODO 这里不能改，有问题。
+ENV SPICY_DIR "/opt/spicy"
 
 COPY --from=build ${ZEEK_DIR} ${ZEEK_DIR}
 COPY --from=build ${SPICY_DIR} ${SPICY_DIR}
@@ -141,6 +142,9 @@ ADD zeek/config/*.zeek ${ZEEK_DIR}/share/zeek/site/
 ADD shared/bin/pcap_moloch_and_zeek_processor.py /usr/local/bin/
 ADD shared/bin/pcap_utils.py /usr/local/bin/
 ADD shared/pcaps /tmp/pcaps
+
+# TODO custom scripts to add
+ADD ./scripts ${ZEEK_DIR}/share/zeek/site/
 
 # sanity check to make sure the plugins installed and copied over correctly
 # these ENVs should match the number of third party plugins installed by zeek_install_plugins.sh
