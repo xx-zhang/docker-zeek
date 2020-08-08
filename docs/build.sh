@@ -99,11 +99,12 @@ ZEEKCFG_VERSION=0.0.5 && \
  && chmod +x ${ZEEK_DIR}/bin/zeekcfg && \
   echo "*/5       *       *       *       *      ${ZEEK_DIR}/bin/zeekctl cron" >> /etc/crontab
 
-# Users must supply their own node.cfg
-RUN rm -f ${ZEEK_DIR}/etc/node.cfg
+#修改失去。
 
-#COPY share/zeek/site/local.zeek ${ZEEK_DIR}/share/zeek/site/local.zeek
+dpkg-reconfigure tzdata
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+## 安装docekr
+apt-get -y update && \
+  apt-get install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y && \
 
-VOLUME ${ZEEK_DIR}/logs

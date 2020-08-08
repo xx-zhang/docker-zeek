@@ -47,8 +47,9 @@ zeekctl cron enable
 # disable the zeekctl ERR trap as there are no more zeek commands to fail
 trap - ERR
 
+# TODO 2020-8-8 注释掉这两个。
 # daemonize cron but log output to stdout
-crond -b -L /dev/fd/1
+##crond -b -L /dev/fd/1
 
 # infinite loop to prevent container from exiting and allow this script to process signals
-while :; do sleep 1s; done
+##while :; do sleep 1s; done

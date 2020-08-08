@@ -148,3 +148,6 @@ docker run --rm -it --network host \
     registry.cn-beijing.aliyuncs.com/rapid7/zeek:beta \
     zeekcfg -o /node.cfg --type afpacket
 ```
+
+## devolopment
+- [event.bif](https://docs.zeek.org/en/current/scripts/base/bif/event.bif.zeek.html)
