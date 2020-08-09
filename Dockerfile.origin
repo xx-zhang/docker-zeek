@@ -83,8 +83,8 @@ RUN pip install zkg==$ZKG_VERSION \
   && zkg install --force $ZEEK_DEFAULT_PACKAGES
 
 # TODO ADD THIRTY == = == = =
-ADD shared/bin/zeek_install_plugins.sh /usr/local/bin/
-RUN bash /usr/local/bin/zeek_install_plugins.sh
+#ADD shared/bin/zeek_install_plugins.sh /usr/local/bin/
+#RUN bash /usr/local/bin/zeek_install_plugins.sh
 # TODO  == = = ==  END
 
 ARG ZEEKCFG_VERSION=0.0.5

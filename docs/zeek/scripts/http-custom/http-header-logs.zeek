@@ -11,21 +11,21 @@ export {
 		## The vector of HTTP header names sent by the client.  No header 
 		## values are included here, just the header names.
 		header_host:    string  &log    &optional;
-                header_accept:  string  &log    &optional;
-                header_accept_charset:  string  &log    &optional;
-                header_accept_encoding:  string  &log    &optional;
-                header_accept_language:  string  &log    &optional;
-                header_accept_ranges:  string  &log    &optional;
-                header_authorization:  string  &log    &optional;
-                header_connection:  string  &log    &optional;
-                header_cookie:  string  &log    &optional;
-                header_content_length:  string  &log    &optional;
-                header_content_type:  string  &log    &optional;
-                header_proxy_authorization:  string  &log    &optional;
+        header_accept:  string  &log    &optional;
+        header_accept_charset:  string  &log    &optional;
+        header_accept_encoding:  string  &log    &optional;
+        header_accept_language:  string  &log    &optional;
+        header_accept_ranges:  string  &log    &optional;
+        header_authorization:  string  &log    &optional;
+        header_connection:  string  &log    &optional;
+        header_cookie:  string  &log    &optional;
+        header_content_length:  string  &log    &optional;
+        header_content_type:  string  &log    &optional;
+        header_proxy_authorization:  string  &log    &optional;
 		## The vector of HTTP header names sent by the server.  No header 
 		## values are included here, just the header names.
-		server_header_names:  vector of string &log &optional;
 
+		server_header_names:  vector of string &log &optional;
 		server_header_values:  vector of string &log &optional;
 	};
 	
@@ -42,9 +42,9 @@ event http_header(c: connection, is_orig: bool, name: string, value: string) &pr
             return;
 
     if ( is_orig )
-        {
+    {
         if ( log_client_header_names )
-                {
+        {
         switch ( name ) {
             case "HOST":
                 c$http$header_host = value;
