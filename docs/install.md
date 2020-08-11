@@ -21,3 +21,25 @@ docker run -itd --name=zeek \
     registry.cn-beijing.aliyuncs.com/rapid7/zeek \
     /entrypoint.sh
 ```
+
+## Docker-Upgrade-For-RITA
+```bash
+touch node.cfg
+
+docker run --rm -it --network host \
+    -v $(pwd)/node.cfg:/node.cfg \
+    registry.cn-beijing.aliyuncs.com/rapid7/docker-zeek \
+    zeekcfg -o /node.cfg --type afpacket
+
+docker run --cap-add net_raw --cap-add net_admin \
+    --network host --detach \
+    --name zeek \
+    --restart always \
+    -v /etc/localtime:/etc/localtime:ro \
+    -v $(pwd)/share/zeek/site/my.zeek:/usr/local/zeek/share/zeek/site/local.zeek \
+    -v $(pwd)/docs/zeek/scripts:/usr/local/zeek/share/zeek/site/scripts \
+    -v /spool/zeek/:/usr/local/zeek/logs/ \
+    -v /spool/zeek/real_time:/usr/local/zeek/spool/manager \
+    -v $(pwd)/node.cfg:/usr/local/zeek/etc/node.cfg \
+    registry.cn-beijing.aliyuncs.com/rapid7/docker-zeek
+```
