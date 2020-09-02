@@ -109,7 +109,7 @@
 @load ./scripts/json-logs
 
 ## TODO ADD scripts that rita - -- -2020-8-19
-@load ./scripts/bzar
-@load ./scripts/ja3
-@load ./scripts/hassh
-@load ./scripts/CommunityID
+#@load ./scripts/bzar
+#@load ./scripts/ja3
+#@load ./scripts/hassh
+#@load ./scripts/CommunityID
