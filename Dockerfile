@@ -15,7 +15,7 @@ ENV SRC_BASE_DIR "/usr/local/src"
 ENV ZEEK_DIR "/usr/local/zeek"
 ENV ZEEK_PATCH_DIR "${SRC_BASE_DIR}/zeek-patches"
 ENV ZEEK_SRC_DIR "${SRC_BASE_DIR}/zeek-${ZEEK_VERSION}"
-ENV ZEEK_VERSION "3.1.4"
+ENV ZEEK_VERSION "3.0.7"
 
 # using clang now instead of gcc because Spicy depends on it
 ENV LLVM_VERSION "10"

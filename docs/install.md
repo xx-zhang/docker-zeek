@@ -12,8 +12,8 @@
 ## docker-main - debian10 
 ```bash
 docker run -itd --name=zeek \
-    -v $(pwd)zeek/packages.zeek:/usr/local/zeek/share/zeek/site/packages/packages.zeek \
-    -v $(pwd)zeek/scripts/:/usr/local/zeek/share/zeek/site/packages/scripts \
+    -v $(pwd)/zeek/packages.zeek:/usr/local/zeek/share/zeek/site/packages/packages.zeek \
+    -v $(pwd)/zeek/scripts/:/usr/local/zeek/share/zeek/site/packages/scripts \
     -v /data/zeek/logs:/usr/local/zeek/logs \
     -v /data/zeek/current:/usr/local/zeek/spool/manager/ \
     -v $(pwd)/zeek/docker-entrypoint.sh:/etc/entrypoint.sh \
