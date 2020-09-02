@@ -9,7 +9,7 @@
 - [zeek环境变量](./zeek.env)
 
 
-## docker-main 
+## docker-main - debian10 
 ```bash
 docker run -itd --name=zeek \
     -v $(pwd)zeek/packages.zeek:/usr/local/zeek/share/zeek/site/packages/packages.zeek \
@@ -42,4 +42,5 @@ docker run --cap-add net_raw --cap-add net_admin \
     -v /spool/zeek/real_time:/usr/local/zeek/spool/manager \
     -v $(pwd)/node.cfg:/usr/local/zeek/etc/node.cfg \
     registry.cn-beijing.aliyuncs.com/rapid7/docker-zeek
+
 ```

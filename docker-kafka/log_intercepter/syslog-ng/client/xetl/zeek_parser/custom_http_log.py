@@ -23,6 +23,7 @@ def parse_zeek_http_custom_log_raw(msg):
     if "body" in _obj.keys():
         response_body = _obj['body']
         del _obj['body']
+    # TODO :: fix missing url
     # TODO :: Parse request_header
     _request_header_names = ["-".join([y.capitalize() for y in x.split('-')]) for x in _obj['client_header_names']]
     _request_header_values = _obj['client_header_values']
